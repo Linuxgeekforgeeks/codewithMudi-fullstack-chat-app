@@ -1,15 +1,17 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChatStore } from "../stores/useChatStore";
 import ChatHeader from "./ChatHeader";
 import MessageInput from "./MessageInput";
 import MessageSkeleton from "./skeletons/MessageSkeleton";
 import { useAuthStore } from "../stores/useAuthStore";
 import { timeFromNow } from "../lib/moment";
+import TypingSkeleton from "./skeletons/TypingSkeleton";
 
 function ChatContainer() {
   const { authUser } = useAuthStore();
   const { messages, getMessages, isMessageLoading, selectedUser, subscribeToMessage, unsubscribeFromMessage } = useChatStore();
   const messageEndRef = useRef(null)
+  const [isTyping,setIsTyping]=useState(true)
 
   useEffect(() => {
     if (selectedUser?._id) {
@@ -83,6 +85,7 @@ function ChatContainer() {
             </div>
           </div>
         ))}
+        {isTyping?<TypingSkeleton/>:""}
       </div>
       <MessageInput />
     </div>
